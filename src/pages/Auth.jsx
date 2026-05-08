@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useForm } from 'react-hook-form';
-import {AuthContext} from "../context/AuthContext";
+import {useAuth} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 
 
 const Auth = () => {
-  const [mode,setMode] = useState("signup");
-  const[error,setError] = useState("null");
+  const [mode,setMode] = useState("signUp");
+  const[error,setError] = useState(null);
   const navigate=useNavigate(); 
-  const{signUp,user,logout,login}=useContext(AuthContext);
+  const{signUp,login}=useAuth();
 
   const {
     register,
@@ -19,7 +19,7 @@ const Auth = () => {
   function onSubmit(data){
     setError(null);
     let result;
-    if (mode==="signup"){
+    if (mode==="signUp"){
     result=signUp(data.email,data.password);
     } else {
     result=login(data.email,data.password);
@@ -37,9 +37,7 @@ const Auth = () => {
     <div className="page">
       <div className="container">
         <div className="auth-container">
-          {user && <p>User logged in: {user.email}</p>}
-          <button onClick={() => logout()}>Logout</button>
-          <h1 className="page-title">{mode === "signup" ? "Sign Up" : "Login"}</h1>
+          <h1 className="page-title">{mode === "signUp" ? "Sign Up" : "Login"}</h1>
           <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
             {error && <div className="error-message">{error}</div>}
             <div className="form-group">
@@ -81,12 +79,12 @@ const Auth = () => {
               )}
             </div>
             <button type="submit" className="btn btn-primary btn-large">
-              {mode === "signup" ? "Sign Up" : "Login"}
+              {mode === "signUp" ? "SignUp" : "Login"}
             </button>
           </form>
 
           <div className="auth-switch">
-            {mode === "signup" ? (
+            {mode === "signUp" ? (
             <p>
               Already have an account?
               <span className="auth-link" onClick={() => setMode("login")}>
@@ -95,7 +93,7 @@ const Auth = () => {
             </p>
           ) : 
              <p>
-              Don't have an account?<span className="auth-link" onClick={() => setMode("signup")}>Sign Up</span>
+              Don't have an account?<span className="auth-link" onClick={() => setMode("signUp")}>Sign Up</span>
             </p>        
           }  
           </div>
